@@ -5,198 +5,80 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>$1 al mes – Nada a cambio</title>
   <meta name="description" content="Paga $1 al mes y recibe absolutamente nada. Limitado a 1 millón de miembros." />
-  <link rel="stylesheet" href="../src/styles/main.css" />
-</head>
+  <style>
+    :root{
+      --bg:#ffffff;        /* fondo */
+      --fg:#000000;        /* texto */
+      --muted:#6b7280;     /* gris sutil */
+      --accent:#16a34a;    /* verde checks */
+      --border:#e5e7eb;    /* borde suave */
+      --alert:#dc2626;     /* rojo aviso */
+      --stack-gap: clamp(16px, 3.2vw, 28px);
+    }
 
-<body>
-  <!-- Header -->
-  <header class="app-header" role="banner" aria-label="Marca VANO">
-    <div class="site-logo-text">VANO</div>
-  </header>
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);
+      font-family: Helvetica, Arial, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Liberation Sans", sans-serif;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+    *{box-sizing:border-box}
 
-  <button id="expireNotice" class="notice" role="alert" aria-live="assertive">
-    El tiempo se agotó, vuelve a intentarlo
-  </button>
+    /* Layout states */
+    .screen{display:none;min-height:100dvh;padding:clamp(16px,4vw,40px)}
+    .screen.active{display:flex;align-items:center;justify-content:center}
 
-  <!-- SLOT MACHINE SCREEN -->
-  <section id="slotScreen" class="screen active" aria-labelledby="slotTitle">
-    <div class="slot-wrap">
-      <div class="brand" aria-label="Marca premium">&nbsp;</div>
-      <h1 id="slotTitle">Tu número de miembro</h1>
+    /* SLOT SCREEN */
+    .slot-wrap{width:min(1000px,92vw);display:flex;flex-direction:column;align-items:center;gap:clamp(16px,2.5vw,28px);text-align:center}
+    .brand{font-weight:600;letter-spacing:.02em}
+    .slots{display:grid;grid-template-columns:repeat(7,1fr);gap:clamp(6px,1.2vw,12px);width:100%;max-width:980px}
+    .reel{position:relative;background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.06);aspect-ratio:1/1.4;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .digit-window{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1, "ss01" 1;font-size:clamp(48px,9vw,120px);line-height:1;font-weight:700}
+    .slot-cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:center}
+    .btn{appearance:none;border:1px solid var(--fg);background:#000;color:#fff;padding:14px 20px;border-radius:999px;font-weight:600;cursor:pointer;transition:transform .06s ease,opacity .2s ease;letter-spacing:.01em}
+    .btn:disabled{opacity:.4;cursor:not-allowed}
+    .retry{margin-top:var(--stack-gap);}
+    .linklike{appearance:none;background:transparent;border:none;padding:6px 10px;border-radius:999px;color:#111;font-weight:600;text-decoration:underline;cursor:pointer}
+    .linklike:hover{opacity:.8}
 
-      <!-- Teaser solicitado: pequeño texto centrado -->
-      <p id="benefitsTeaser" class="fine" aria-live="polite" style="text-align:center;margin:6px 0 10px;">
-        Beneficios exclusivos próximamente
-      </p>
+    /* HOME SCREEN */
+    .home-wrap{width:100%;max-width:min(860px,92vw);display:flex;flex-direction:column;gap:var(--stack-gap);align-items:center;text-align:center;justify-content:center;margin-left:auto;margin-right:auto}
+    h1{margin:0;line-height:1.1;font-weight:700;font-size:clamp(28px,4.5vw,56px)}
+    .sub{color:var(--muted);font-size:clamp(16px,2.2vw,20px)}
+    .reservation{display:flex;flex-direction:column;gap:8px;align-items:center;padding:0;border:none;box-shadow:none;width:auto;max-width:none;background:transparent}
+    .tag{display:inline-flex;align-items:center;gap:10px;font-variant-numeric:tabular-nums;font-weight:700;letter-spacing:.02em;padding:8px 14px;border-radius:999px;border:1px solid var(--border)}
+    .countdown{font-weight:700}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+    .btn-black{background:#000;color:#fff}
+    .btn-white{background:#fff;color:#000;border:1px solid var(--fg)}
+    .checks{display:grid;grid-template-columns:1fr;gap:var(--stack-gap);width:100%;max-width:560px;justify-items:center;text-align:left}
+    .check{display:flex;align-items:center;gap:10px;justify-content:flex-start;width:100%;max-width:560px}
+    .check svg{flex:0 0 auto}
+    .home-fold{min-height:100dvh;display:flex;align-items:center;justify-content:center;width:100%}
+    .home-stack> * + *{margin-top:var(--stack-gap)}
+    .home-stack{display:flex;flex-direction:column;align-items:center;padding-block:var(--stack-gap)}
 
-      <div class="slots" aria-live="polite" aria-atomic="true">
-        <div class="reel"><div class="digit-window" data-reel="0">0</div></div>
-        <div class="reel"><div class="digit-window" data-reel="1">0</div></div>
-        <div class="reel"><div class="digit-window" data-reel="2">0</div></div>
-        <div class="reel"><div class="digit-window" data-reel="3">0</div></div>
-        <div class="reel"><div class="digit-window" data-reel="4">0</div></div>
-        <div class="reel"><div class="digit-window" data-reel="5">0</div></div>
-        <div class="reel"><div class="digit-window" data-reel="6">0</div></div>
-      </div>
+    /* Subtle fade transitions */
+    .fade-enter{opacity:0;transform:translateY(10px)}
+    .fade-enter-active{opacity:1;transform:none;transition:all .5s ease}
 
-      <div class="slot-cta">
-        <button id="spinBtn" class="btn">Obtener mi número</button>
-      </div>
+    /* Staggered entrance (Apple-like) */
+    @keyframes fadeUp { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform:none; } }
+    .stagger > *{opacity:0; transform: translateY(8px)}
+    .stagger-on > *{animation: fadeUp .6s ease forwards}
+    .stagger-on > *:nth-child(1){animation-delay:.00s}
+    .stagger-on > *:nth-child(2){animation-delay:.08s}
+    .stagger-on > *:nth-child(3){animation-delay:.16s}
+    .stagger-on > *:nth-child(4){animation-delay:.24s}
+    .stagger-on .home-stack > *{opacity:0;animation: fadeUp .6s ease forwards}
+    .stagger-on .home-stack > *:nth-child(1){animation-delay:.20s}
+    .stagger-on .home-stack > *:nth-child(2){animation-delay:.32s}
+    .stagger-on .home-stack > *:nth-child(3){animation-delay:.44s}
 
-      <p style="margin:6px 0 0 0;font-size:14px;color:#111;">
-        <button id="openLogin" class="linklike" aria-haspopup="dialog">
-          Iniciar sesión
-        </button>
-      </p>
-    </div>
-  </section>
+    /* Expiration notice */
+    .notice{position:fixed;top:12px;left:50%;transform:translateX(-50%);padding:10px 16px;border-radius:999px;border:1px solid rgba(220,38,38,.25);background:rgba(220,38,38,.08);color:var(--alert);font-weight:600;display:none;z-index:50}
 
-  <!-- HOME SCREEN -->
-  <main id="homeScreen" class="screen" aria-labelledby="homeTitle">
-    <div class="home-wrap home-fold">
-      <div class="fade-enter stagger" id="homeInner">
+    /* LOSER SCREEN */
+    .loser-wrap{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;background:#fff}
+    .emoji-box{position:relative;display:inline-flex;align-items:center;justify-content:center}
+    .emoji{font-size:clamp(160px,32vw,360px);display:inline-block;animation: headTilt 2.2s ease-in-out infinite, scalePulse 2.2s ease-in-out infinite}
+    .back-link{appearance:none;background:transparent;border:1px solid #111;color:#111;padding:10px 14px;border-radius:999px;font-weight:600;cursor:pointer}
 
-        <h1 id="homeTitle">Paga $1 al mes y recibe absolutamente nada.</h1>
-        <p class="sub">Limitado a solo 1 millón de miembros.</p>
-
-        <div class="home-stack">
-          <div class="reservation">
-            <div class="tag" id="memberTag">
-              Nº <span id="memberNumber">—</span> · <span>Reservado</span>
-            </div>
-            <div class="countdown">Expira en <span id="countdown">45</span>s</div>
-          </div>
-
-          <div class="actions">
-            <button id="joinBtn" class="btn btn-black">Quiero unirme, soy increíble</button>
-            <button id="loseBtn" class="btn btn-white">Soy un perdedor</button>
-          </div>
-
-          <div class="checks">
-            <div class="check">
-              <svg width="18" height="18"><path d="M20 6L9 17l-5-5" stroke="var(--accent)" stroke-width="2"/></svg>
-              <span>Cancela en cualquier momento</span>
-            </div>
-            <div class="check">
-              <svg width="18" height="18"><path d="M20 6L9 17l-5-5" stroke="var(--accent)" stroke-width="2"/></svg>
-              <span>1 dollar al mes</span>
-            </div>
-            <div class="check">
-              <svg width="18" height="18"><path d="M20 6L9 17l-5-5" stroke="var(--accent)" stroke-width="2"/></svg>
-              <span>Sé parte del 0,012% del planeta</span>
-            </div>
-          </div>
-
-          <p class="retry">
-            <button id="retryLink" class="linklike">Obtener nuevo número</button>
-          </p>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <!-- LOSER SCREEN -->
-  <section id="loserScreen" class="screen" aria-labelledby="loserTitle">
-    <div class="loser-wrap">
-      <h1 id="loserTitle" class="sr-only">Pantalla de broma</h1>
-
-      <div class="emoji-box">
-        <span class="emoji">😂</span>
-      </div>
-
-      <button id="backToMenu" class="back-link">Regresar al menú principal</button>
-    </div>
-  </section>
-
-  <!-- SUCCESS SCREEN -->
-  <section id="successScreen" class="screen">
-    <canvas id="confetti" style="position:fixed;inset:0;pointer-events:none"></canvas>
-
-    <div class="home-wrap" style="gap:24px; text-align:center;">
-      <h1>¡Bienvenido!</h1>
-      <p class="sub">Tu número de miembro</p>
-
-      <div class="big-number">
-        Nº <span id="purchasedNumber">—</span>
-      </div>
-
-      <div style="display:flex;gap:12px;justify-content:center;">
-        <button id="cancelSub" class="btn btn-white">Cancelar suscripción</button>
-        <button id="termsLink" class="btn btn-black">Términos y condiciones</button>
-      </div>
-
-      <div id="postCancelInfo" style="display:none; margin-top:12px">
-        <p class="sub">Tu número se liberará el <span id="releaseDate">—</span>.</p>
-        <button id="renewSub" class="btn btn-black">Renovar la suscripción</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONFIRM CANCEL MODAL -->
-  <div id="confirmCancel" class="modal">
-    <div class="sheet">
-      <button class="close-x" id="confirmCancelClose">×</button>
-      <h2>¿Cancelar suscripción?</h2>
-      <p class="fine">Tu número se liberará al final del ciclo.</p>
-
-      <div style="display:flex;gap:10px;justify-content:flex-end">
-        <button id="confirmNo" class="btn btn-white">No</button>
-        <button id="confirmYes" class="btn btn-black">Sí</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- TERMS MODAL -->
-  <div id="termsModal" class="modal">
-    <div class="sheet">
-      <button class="close-x" id="termsClose">×</button>
-      <h2>Términos y condiciones</h2>
-      <div class="fine">
-        <p>• Puedes cancelar tu suscripción en cualquier momento.</p>
-        <p>• Se renueva automáticamente cada 28 días.</p>
-        <p>• No almacenamos datos personales.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- CHECKOUT MODAL -->
-  <div id="checkoutModal" class="modal">
-    <div class="sheet">
-      <button class="close-x" id="coClose">×</button>
-      <h2>Elige tu método de pago</h2>
-
-      <div class="pay-grid">
-        <button class="pay-btn" id="payCard">Tarjeta de crédito</button>
-        <button class="pay-btn" id="payApple">Apple&nbsp;Pay</button>
-        <button class="pay-btn" id="payPayPal">PayPal</button>
-      </div>
-
-      <p class="fine">Modo de prueba</p>
-    </div>
-  </div>
-
-  <!-- LOGIN / SIGNUP -->
-  <div id="authModal" class="modal">
-    <div class="sheet">
-      <button class="close-x" id="authClose">×</button>
-      <h2 id="authTitle">Iniciar sesión</h2>
-
-      <label>E-mail</label>
-      <input id="authEmail" type="email" placeholder="tu@correo.com" />
-
-      <label>Contraseña</label>
-      <input id="authPass" type="password" minlength="6" placeholder="•••••" />
-
-      <div id="authError" class="fine" style="display:none">Datos incorrectos.</div>
-
-      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:6px">
-        <button id="authCancel" class="btn btn-white">Cancelar</button>
-        <button id="authSubmit" class="btn btn-black">Continuar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Carga del JS Modular -->
-  <script type="module" src="../src/js/main.js"></script>
-</body>
-</html>
+    @keyframes headTilt{ 0%,100%{ transform: rotate(0deg)} 25%{ transform: rotate(3d
