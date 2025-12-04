@@ -12,8 +12,8 @@ import { zeroPad } from './utils.js';
    - Ejemplo: 'https://tusitio.com/pagar?m={MEMBER}'
    ======================================================================= */
 const PAYMENT_LINKS = Object.freeze({
-  card: https://ppls.me/5NTwxIdRRNa6bEODJ4WOhw   // ← Pega aquí el link externo de "Tarjeta de crédito"
-  paypal: https://www.paypal.com/ncp/payment/F5FAB56A8H5EC  // ← Pega aquí el link externo de "PayPal"
+  card: 'https://ppls.me/5NTwxIdRRNa6bEODJ4WOhw   // ← Pega aquí el link externo de "Tarjeta de crédito"
+  paypal: 'https://www.paypal.com/ncp/payment/F5FAB56A8H5EC  // ← Pega aquí el link externo de "PayPal"
 });
 
 /* =========================================================================
