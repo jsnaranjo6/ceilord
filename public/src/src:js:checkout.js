@@ -6,21 +6,20 @@ import { openAuth } from './auth.js';
 import { zeroPad } from './utils.js';
 
 /* =========================================================================
-   🔧 EDITA AQUÍ TUS LINKS EXTERNOS
+   🔧 EDITA AQUÍ TUS LINKS EXTERNOS (OBLIGATORIO)
    - Usa HTTPS.
    - Puedes incluir {MEMBER} y se sustituirá por el número de miembro con zero-pad (7 dígitos).
    - Ejemplo: 'https://tusitio.com/pagar?m={MEMBER}'
    ======================================================================= */
 const PAYMENT_LINKS = Object.freeze({
-  card: 'https://ppls.me/5NTwxIdRRNa6bEODJ4WOhw   // ← Pega aquí el link externo de "Tarjeta de crédito"
-  paypal: 'https://www.paypal.com/ncp/payment/F5FAB56A8H5EC  // ← Pega aquí el link externo de "PayPal"
+  card: 'https://ppls.me/5NTwxIdRRNa6bEODJ4WOhw',   // ← Pega aquí el link externo de "Tarjeta de crédito"
+  paypal: 'https://www.paypal.com/ncp/payment/F5FAB56A8H5EC'  // ← Pega aquí el link externo de "PayPal"
 });
 
 /* =========================================================================
-   ⚙️ MODO DESARROLLO (opcional)
-   - Si dejas el link vacío, por defecto haremos el flujo "demo"
-     onPaid() (marca comprado y abre signup) para poder probar el resto.
-   - Si NO quieres este fallback, cambia DEMO_FALLBACK_ON_EMPTY_LINKS a false.
+   ⚙️ MODO DESARROLLO
+   - Si dejas el link vacío y esto está en true, se hace flujo demo (marca compra y abre signup).
+   - Si lo pones en false y el link está vacío, muestra alerta.
    ======================================================================= */
 const DEMO_FALLBACK_ON_EMPTY_LINKS = false;
 
@@ -35,13 +34,13 @@ function resolveLink(tpl) {
   return tpl.replace(/\{MEMBER\}/g, member);
 }
 
-/** Redirige en la misma pestaña. */
+/** Redirige en la misma pestaña (fiable: no lo bloquea el navegador). */
 function redirectTo(url) {
-  // Asumimos navegación directa; si prefieres nueva pestaña: window.open(url, '_blank', 'noopener');
-  window.location.href = url;
+  // Si prefieres nueva pestaña: window.open(url, '_blank', 'noopener');
+  window.location.assign(url);
 }
 
-/** Flujo de pago "demo" (marca comprado y abre signup). */
+/** Flujo de pago "demo" (solo para pruebas locales). */
 function onPaidDemo() {
   if (state.reservedNumber != null) {
     markPurchased(state.reservedNumber);
@@ -50,16 +49,54 @@ function onPaidDemo() {
   openAuth('signup');
 }
 
+/** Elimina cualquier botón Apple Pay que exista o vuelva a aparecer. */
+function purgeApplePayButtons() {
+  // 1) Referencias conocidas
+  if (els.payApple && typeof els.payApple.remove === 'function') {
+    try { els.payApple.remove(); } catch {}
+  }
+  // 2) Búsquedas defensivas por id y por texto
+  const candidates = [
+    ...document.querySelectorAll('#payApple, [data-pay="apple"], .pay-btn')
+  ];
+  for (const node of candidates) {
+    const txt = (node.textContent || '').trim().toLowerCase();
+    if (node.id === 'payApple' || txt === 'apple pay' || txt.includes('apple')) {
+      try { node.remove(); } catch {}
+    }
+  }
+}
+
+/** Observa el modal por si alguien reinyecta Apple Pay (re-render). */
+let appleObserver = null;
+function ensureNoAppleWhileOpen() {
+  purgeApplePayButtons();
+  if (appleObserver) return;
+  if (!els.modal) return;
+  appleObserver = new MutationObserver(() => purgeApplePayButtons());
+  appleObserver.observe(els.modal, { childList: true, subtree: true });
+}
+function stopAppleObserver() {
+  if (appleObserver) {
+    try { appleObserver.disconnect(); } catch {}
+    appleObserver = null;
+  }
+}
+
 /* =========================================================================
    API pública
    ======================================================================= */
 
 export function openCheckout() {
-  els.modal.classList.add('active');
+  if (els.modal) {
+    els.modal.classList.add('active');
+    ensureNoAppleWhileOpen();
+  }
 }
 
 export function closeCheckout() {
-  els.modal.classList.remove('active');
+  if (els.modal) els.modal.classList.remove('active');
+  stopAppleObserver();
 }
 
 export function wireCheckout() {
@@ -71,36 +108,42 @@ export function wireCheckout() {
     });
   }
 
-  // 🔥 Asegurar eliminación de Apple Pay si por alguna razón existe en el DOM
-  if (els.payApple && typeof els.payApple.remove === 'function') {
-    els.payApple.remove();
-  }
+  // 🔥 Eliminar Apple Pay de entrada (por si ya está en el DOM)
+  purgeApplePayButtons();
 
-  // "Tarjeta de crédito" → redirección externa o demo
-  if (els.payCard) {
-    els.payCard.addEventListener('click', () => {
+  // ============================
+  // Event delegation robusto
+  // ============================
+  document.addEventListener('click', (e) => {
+    const btnCard = e.target.closest('#payCard');
+    const btnPayPal = e.target.closest('#payPayPal');
+
+    if (btnCard) {
+      e.preventDefault();
       const url = resolveLink(PAYMENT_LINKS.card);
       if (url) {
+        closeCheckout(); // opcional: cerrar antes de irse
         redirectTo(url);
       } else if (DEMO_FALLBACK_ON_EMPTY_LINKS) {
         onPaidDemo();
       } else {
         alert('Link de pago con tarjeta no está configurado.');
       }
-    });
-  }
+      return;
+    }
 
-  // "PayPal" → redirección externa o demo
-  if (els.payPayPal) {
-    els.payPayPal.addEventListener('click', () => {
+    if (btnPayPal) {
+      e.preventDefault();
       const url = resolveLink(PAYMENT_LINKS.paypal);
       if (url) {
+        closeCheckout();
         redirectTo(url);
       } else if (DEMO_FALLBACK_ON_EMPTY_LINKS) {
         onPaidDemo();
       } else {
         alert('Link de pago con PayPal no está configurado.');
       }
-    });
-  }
+      return;
+    }
+  });
 }
