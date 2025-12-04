@@ -81,4 +81,610 @@
     .emoji{font-size:clamp(160px,32vw,360px);display:inline-block;animation: headTilt 2.2s ease-in-out infinite, scalePulse 2.2s ease-in-out infinite}
     .back-link{appearance:none;background:transparent;border:1px solid #111;color:#111;padding:10px 14px;border-radius:999px;font-weight:600;cursor:pointer}
 
-    @keyframes headTilt{ 0%,100%{ transform: rotate(0deg)} 25%{ transform: rotate(3d
+    @keyframes headTilt{ 0%,100%{ transform: rotate(0deg)} 25%{ transform: rotate(3deg)} 50%{ transform: rotate(0deg)} 75%{ transform: rotate(-3deg)} }
+    @keyframes scalePulse{ 0%,100%{ transform: scale(1)} 50%{ transform: scale(1.06)} }
+  </style>
+  <style>
+    /* Checkout & Auth modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55)}
+    .modal.active{display:flex}
+    .sheet{background:#fff;color:#000;width:min(520px,92vw);border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.25);padding:24px;position:relative}
+    .sheet h2{margin:0 0 12px 0;font-size:22px}
+    .pay-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
+    .pay-btn{display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid #111;border-radius:999px;padding:12px 16px;font-weight:600;cursor:pointer}
+    .close-x{position:absolute;right:16px;top:12px;background:transparent;border:none;font-size:24px;cursor:pointer}
+    .fine{color:#6b7280;font-size:13px;margin-top:12px}
+
+    /* Inputs helpers */
+    input:focus{outline:none;box-shadow:0 0 0 3px rgba(0,0,0,.08)}
+  </style>
+  <style>
+    /* Header/logo */
+    .app-header{position:fixed;top:14px;left:14px;z-index:100;display:flex;align-items:center;gap:10px}
+    .site-logo-text{
+      font-family: Helvetica, Arial, sans-serif;
+      font-weight: 700;
+      font-size: clamp(28px, 3vw, 40px);
+      color:#111;
+      letter-spacing:0;
+      user-select:none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header con logo fijo (texto) -->
+  <header class="app-header" role="banner" aria-label="Marca VANO">
+    <div class="site-logo-text">VANO</div>
+  </header>
+  <button id="expireNotice" class="notice" role="alert" aria-live="assertive">El tiempo se agotó, vuelve a intentarlo</button>
+
+  <!-- SLOT MACHINE SCREEN -->
+  <section id="slotScreen" class="screen active" aria-labelledby="slotTitle">
+    <div class="slot-wrap">
+      <div class="brand" aria-label="Marca premium">&nbsp;</div>
+      <h1 id="slotTitle">Tu número de miembro</h1>
+
+      <!-- Teaser solicitado -->
+      <p id="benefitsTeaser" class="fine" aria-live="polite" style="text-align:center;margin:-6px 0 4px;">
+        Beneficios exclusivos próximamente
+      </p>
+
+      <div class="slots" aria-live="polite" aria-atomic="true">
+        <div class="reel"><div class="digit-window" data-reel="0">0</div></div>
+        <div class="reel"><div class="digit-window" data-reel="1">0</div></div>
+        <div class="reel"><div class="digit-window" data-reel="2">0</div></div>
+        <div class="reel"><div class="digit-window" data-reel="3">0</div></div>
+        <div class="reel"><div class="digit-window" data-reel="4">0</div></div>
+        <div class="reel"><div class="digit-window" data-reel="5">0</div></div>
+        <div class="reel"><div class="digit-window" data-reel="6">0</div></div>
+      </div>
+
+      <div class="slot-cta">
+        <button id="spinBtn" class="btn" aria-describedby="probHint">Obtener mi número</button>
+      </div>
+      <p style="margin:6px 0 0 0;font-size:14px;color:#111;">
+        <button id="openLogin" class="linklike" aria-haspopup="dialog">Iniciar sesión</button>
+      </p>
+    </div>
+  </section>
+
+  <!-- HOME SCREEN -->
+  <main id="homeScreen" class="screen" aria-labelledby="homeTitle">
+    <div class="home-wrap home-fold">
+      <div class="fade-enter stagger" id="homeInner">
+        <h1 id="homeTitle">Paga $1 al mes y recibe absolutamente nada.</h1>
+        <p class="sub">Limitado a solo 1 millón de miembros.</p>
+
+        <div class="home-stack">
+          <div class="reservation" role="status" aria-live="polite" aria-atomic="true">
+            <div class="tag" id="memberTag" title="Número reservado por 45 segundos">
+              Nº <span id="memberNumber">—</span> · <span>Reservado</span>
+            </div>
+            <div class="countdown">Expira en <span id="countdown">45</span>s</div>
+          </div>
+
+          <div class="actions">
+            <button id="joinBtn" class="btn btn-black">Quiero unirme, soy increíble</button>
+            <button id="loseBtn" class="btn btn-white">Soy un perdedor</button>
+          </div>
+
+          <div class="checks" aria-label="Condiciones">
+            <div class="check">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6L9 17l-5-5" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>Cancela en cualquier momento</span>
+            </div>
+            <div class="check">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6L9 17l-5-5" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>1 dollar al mes</span>
+            </div>
+            <div class="check">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6L9 17l-5-5" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>Sé parte del 0,012% del planeta</span>
+            </div>
+          </div>
+
+          <p class="retry"><button id="retryLink" class="linklike">Obtener nuevo número</button></p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- LOSER SCREEN -->
+  <section id="loserScreen" class="screen" aria-labelledby="loserTitle">
+    <div class="loser-wrap">
+      <h1 id="loserTitle" style="position:absolute;left:-9999px;">Pantalla de broma</h1>
+      <div class="emoji-box" aria-hidden="true">
+        <span class="emoji">😂</span>
+      </div>
+      <button id="backToMenu" class="back-link">Regresar al menú principal</button>
+    </div>
+  </section>
+
+  <!-- SUCCESS SCREEN -->
+  <section id="successScreen" class="screen" aria-labelledby="successTitle">
+    <canvas id="confetti" aria-hidden="true" style="position:fixed;inset:0;pointer-events:none"></canvas>
+    <div class="home-wrap" style="gap:24px; text-align:center;">
+      <h1 id="successTitle">¡Bienvenido!</h1>
+      <p class="sub">Tu número de miembro</p>
+      <div class="big-number" style="font-variant-numeric:tabular-nums;font-weight:800;font-size:clamp(40px,7vw,84px);">Nº <span id="purchasedNumber">—</span></div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button id="cancelSub" class="btn btn-white" style="border:1px solid #000;color:#000;background:#fff">Cancelar suscripción</button>
+        <button id="termsLink" class="btn btn-black" style="background:#000;color:#fff">Términos y condiciones</button>
+      </div>
+
+      <!-- Frase de beneficencia solicitada -->
+      <p class="fine" style="margin-top:10px;">
+        Los fondos recaudados serán utilizados en beneficencia del pueblo ecuatoriano.
+      </p>
+
+      <div id="postCancelInfo" style="display:none; margin-top:12px">
+        <p class="sub" id="releaseInfo">Tu número se liberará el <span id="releaseDate">—</span>.</p>
+        <button id="renewSub" class="btn btn-black">Renovar la suscripción</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONFIRM CANCEL MODAL -->
+  <div id="confirmCancel" class="modal" role="dialog" aria-modal="true" aria-labelledby="confirmCancelTitle">
+    <div class="sheet">
+      <button class="close-x" aria-label="Cerrar" id="confirmCancelClose">×</button>
+      <h2 id="confirmCancelTitle">¿Cancelar suscripción?</h2>
+      <p class="fine" style="font-size:14px;line-height:1.6">
+        ¿Estás seguro que deseas cancelar la suscripción? <strong>Tu número de miembro volverá a estar disponible</strong>
+        cuando finalice tu ciclo actual de 28 días. Cualquier cobro futuro será cancelado.
+      </p>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
+        <button id="confirmNo" class="btn btn-white" style="background:#fff;color:#000;border:1px solid #000">No</button>
+        <button id="confirmYes" class="btn btn-black">Sí</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TERMS MODAL -->
+  <div id="termsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="termsTitle">
+    <div class="sheet">
+      <button class="close-x" aria-label="Cerrar" id="termsClose">×</button>
+      <h2 id="termsTitle">Términos y condiciones</h2>
+      <div class="fine" style="font-size:14px;line-height:1.6">
+        <p>• Puedes <strong>cancelar tu suscripción en cualquier momento</strong>. La cancelación se hace efectiva de inmediato y no se generarán cargos futuros.</p>
+        <p>• La suscripción se <strong>renueva automáticamente cada 28 días</strong> a partir del momento de la compra, hasta que decidas cancelarla.</p>
+        <p>• <strong>No almacenamos datos personales</strong> más allá de la información estrictamente necesaria para procesar el pago. No vendemos ni compartimos información con terceros con fines comerciales.</p>
+        <p>• Este es un servicio experimental y sin prestaciones asociadas, ofrecido “tal cual”.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL (mock de prueba) -->
+  <div id="checkoutModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="coTitle">
+    <div class="sheet">
+      <button class="close-x" aria-label="Cerrar" id="coClose">×</button>
+      <h2 id="coTitle">Elige tu método de pago</h2>
+      <div class="pay-grid">
+        <button class="pay-btn" id="payCard">Tarjeta de crédito</button>
+        <button class="pay-btn" id="payApple">Apple&nbsp;Pay</button>
+        <button class="pay-btn" id="payPayPal">PayPal</button>
+      </div>
+      <p class="fine">Modo de prueba. Integraremos Stripe/Apple Pay/PayPal reales en producción.</p>
+    </div>
+  </div>
+
+  <!-- AUTH MODAL (login / signup) -->
+  <div id="authModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <div class="sheet">
+      <button class="close-x" aria-label="Cerrar" id="authClose">×</button>
+      <h2 id="authTitle">Iniciar sesión</h2>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">
+        <label style="text-align:left;font-size:14px">E-mail</label>
+        <input id="authEmail" type="email" placeholder="tu@correo.com" style="padding:12px 14px;border:1px solid #111;border-radius:12px;font-size:15px" />
+        <label style="text-align:left;font-size:14px">Contraseña (mín. 6)</label>
+        <input id="authPass" type="password" minlength="6" placeholder="••••••" style="padding:12px 14px;border:1px solid #111;border-radius:12px;font-size:15px" />
+        <div id="authError" class="fine" style="color:#dc2626;display:none">Datos ingresados incorrectos.</div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:6px">
+          <button id="authCancel" class="btn btn-white" style="background:#fff;color:#000;border:1px solid #000">Cancelar</button>
+          <button id="authSubmit" class="btn btn-black">Continuar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // Ejecuta TODO el JS una vez que el DOM esté listo (evita null en elementos como #authClose)
+  window.addEventListener('DOMContentLoaded', function(){
+    (function(){
+      // === CONSTANTES ===
+      const MAX_NUMBER = 1000000; // 7 slots
+      const MIN_NUMBER = 1;
+      const SPIN_TIME = 1400; // ms base
+      const COUNTDOWN_SECONDS = 45;
+
+      // === ELEMENTOS ===
+      const slotScreen = document.getElementById('slotScreen');
+      const homeScreen = document.getElementById('homeScreen');
+      const loserScreen = document.getElementById('loserScreen');
+      const successScreen = document.getElementById('successScreen');
+      const spinBtn = document.getElementById('spinBtn');
+      const memberNumberEl = document.getElementById('memberNumber');
+      const countdownEl = document.getElementById('countdown');
+      const homeInner = document.getElementById('homeInner');
+      const joinBtn = document.getElementById('joinBtn');
+      const loseBtn = document.getElementById('loseBtn');
+      const modal = document.getElementById('checkoutModal');
+      const coClose = document.getElementById('coClose');
+      const payCard = document.getElementById('payCard');
+      const payApple = document.getElementById('payApple');
+      const payPayPal = document.getElementById('payPayPal');
+      // Auth elements
+      const openLogin = document.getElementById('openLogin');
+      const authModal = document.getElementById('authModal');
+      const authClose = document.getElementById('authClose');
+      const authTitle = document.getElementById('authTitle');
+      const authEmail = document.getElementById('authEmail');
+      const authPass = document.getElementById('authPass');
+      const authError = document.getElementById('authError');
+      const authCancel = document.getElementById('authCancel');
+      const authSubmit = document.getElementById('authSubmit');
+      const backToMenu = document.getElementById('backToMenu');
+      const purchasedNumberEl = document.getElementById('purchasedNumber');
+      const cancelSubBtn = document.getElementById('cancelSub');
+      const termsLinkBtn = document.getElementById('termsLink');
+      const termsModal = document.getElementById('termsModal');
+      const termsClose = document.getElementById('termsClose');
+      const confettiCanvas = document.getElementById('confetti');
+      const confirmCancel = document.getElementById('confirmCancel');
+      const confirmCancelClose = document.getElementById('confirmCancelClose');
+      const confirmYes = document.getElementById('confirmYes');
+      const confirmNo = document.getElementById('confirmNo');
+      const postCancelInfo = document.getElementById('postCancelInfo');
+      const releaseInfo = document.getElementById('releaseInfo');
+      const releaseDateEl = document.getElementById('releaseDate');
+      const renewSubBtn = document.getElementById('renewSub');
+      const expireNotice = document.getElementById('expireNotice');
+      const retryLink = document.getElementById('retryLink');
+      const reels = Array.from(document.querySelectorAll('.digit-window'));
+
+      // === ESTADO ===
+      let reservedNumber = null;
+      let countdownTimer = null;
+      let remaining = COUNTDOWN_SECONDS;
+
+      // === PERSISTENCIA DEMO ===
+      const LS_KEY = 'purchasedNumbers_v1';
+      const LS_USERS = 'users_v1';
+      const LS_META = 'purchasedMeta_v1';
+      const MS_28D = 28*24*60*60*1000;
+      function loadPurchased(){
+        try{
+          const arr = JSON.parse(localStorage.getItem(LS_KEY)||'[]');
+          return new Set(arr.filter(n=>Number.isInteger(n)&&n>=MIN_NUMBER&&n<=MAX_NUMBER));
+        }catch(e){ return new Set(); }
+      }
+      function loadUsers(){ try{ return JSON.parse(localStorage.getItem(LS_USERS)||'{}'); }catch(e){ return {}; } }
+      function saveUsers(users){ localStorage.setItem(LS_USERS, JSON.stringify(users)); }
+      function savePurchased(set){ localStorage.setItem(LS_KEY, JSON.stringify(Array.from(set))); }
+      function loadMeta(){ try{ return JSON.parse(localStorage.getItem(LS_META)||'{}'); } catch(e){ return {}; } }
+      function saveMeta(meta){ localStorage.setItem(LS_META, JSON.stringify(meta)); }
+      function markPurchased(n){
+        const set = loadPurchased(); set.add(n); savePurchased(set);
+        const meta = loadMeta(); meta[n]={status:'active', purchasedAt: Date.now(), nextRenewal: Date.now()+MS_28D}; saveMeta(meta);
+      }
+      function isPurchased(n){
+        const meta = loadMeta();
+        if(meta[n]){
+          if(meta[n].status==='active') return true;
+          if(meta[n].status==='cancelled') return Date.now() < (meta[n].nextRenewal||0);
+        }
+        return loadPurchased().has(n);
+      }
+      function pickAvailableNumber(){
+        const set = loadPurchased();
+        const meta = loadMeta();
+        const unavailable=(n)=>{
+          if(meta[n]){
+            if(meta[n].status==='active') return true;
+            if(meta[n].status==='cancelled') return Date.now() < (meta[n].nextRenewal||0);
+          }
+          return set.has(n);
+        }
+        if(set.size >= (MAX_NUMBER - MIN_NUMBER + 1)) return null; // agotado
+        for(let i=0;i<5000;i++){
+          const cand = randomInt(MIN_NUMBER, MAX_NUMBER);
+          if(!unavailable(cand)) return cand;
+        }
+        for(let cand=MIN_NUMBER; cand<=MAX_NUMBER; cand++){
+          if(!unavailable(cand)) return cand;
+        }
+        return null;
+      }
+
+      // === UTILIDADES ===
+      function zeroPad(num){ return String(num).padStart(7,'0'); }
+      function randomInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+
+      // === ANIMACIÓN TRAGAMONEDAS ===
+      function animateReelsTo(targetStr){
+        const endDigits = targetStr.split('').map(d=>parseInt(d,10));
+        const easeOutCubic = (x)=>1-Math.pow(1-x,3);
+        reels.forEach((el, idx)=>{
+          const startDigit = (parseInt(el.textContent,10) || 0) % 10;
+          const targetDigit = endDigits[idx];
+          const fullTurns = 30 + idx*4; // vueltas visibles
+          const totalSteps = fullTurns*10 + ((targetDigit - startDigit + 10) % 10);
+          const duration = SPIN_TIME + idx*220 + 800; // cada carrete tarda más
+          const started = performance.now();
+
+          const tick = (now)=>{
+            const t = Math.min(1, (now - started)/duration);
+            const eased = easeOutCubic(t);
+            const step = Math.floor(eased * totalSteps);
+            el.textContent = (startDigit + step) % 10;
+            if (t < 1){
+              requestAnimationFrame(tick);
+            } else {
+              el.textContent = targetDigit;
+            }
+          };
+          requestAnimationFrame(tick);
+        });
+      }
+
+      // === NAVEGACIÓN ENTRE PANTALLAS ===
+      function goHome(){
+        slotScreen.classList.remove('active');
+        loserScreen.classList.remove('active');
+        homeScreen.classList.add('active');
+        homeInner.classList.add('fade-enter','stagger');
+        requestAnimationFrame(()=>{ homeInner.classList.add('fade-enter-active','stagger-on'); });
+      }
+      function goLoser(){
+        clearInterval(countdownTimer);
+        slotScreen.classList.remove('active');
+        homeScreen.classList.remove('active');
+        successScreen.classList.remove('active');
+        loserScreen.classList.add('active');
+      }
+      function goSuccess(){
+        slotScreen.classList.remove('active');
+        homeScreen.classList.remove('active');
+        loserScreen.classList.remove('active');
+        successScreen.classList.add('active');
+        startConfetti();
+      }
+      function goSlots(){
+        clearInterval(countdownTimer);
+        spinBtn.disabled = false;
+        memberNumberEl.textContent = '—';
+        countdownEl.textContent = COUNTDOWN_SECONDS;
+        homeScreen.classList.remove('active');
+        loserScreen.classList.remove('active');
+        successScreen.classList.remove('active');
+        slotScreen.classList.add('active');
+      }
+
+      // === CUENTA REGRESIVA ===
+      function startCountdown(){
+        clearInterval(countdownTimer);
+        remaining = COUNTDOWN_SECONDS;
+        countdownEl.textContent = remaining;
+        joinBtn.disabled = false;
+        countdownTimer = setInterval(()=>{
+          remaining--; countdownEl.textContent = remaining;
+          if(remaining<=0){
+            clearInterval(countdownTimer);
+            goSlots();
+            showExpireNotice();
+          }
+        },1000);
+      }
+
+      // === LÓGICA PRINCIPAL ===
+      function assignNumber(){
+        const next = pickAvailableNumber();
+        if(next===null){
+          alert('Todos los números han sido adquiridos.');
+          return;
+        }
+        reservedNumber = next;
+        const formatted = zeroPad(reservedNumber);
+        animateReelsTo(formatted);
+        spinBtn.disabled = true;
+        const lastReelDelay = SPIN_TIME + 6*220 + 800; // coincide con el último carrete
+        setTimeout(()=>{
+          memberNumberEl.textContent = formatted;
+          goHome();
+          startCountdown();
+        }, lastReelDelay);
+      }
+
+      // === EVENTOS ===
+      spinBtn.addEventListener('click', assignNumber);
+      joinBtn.addEventListener('click', ()=>{ if(!joinBtn.disabled) openCheckout(); });
+      loseBtn.addEventListener('click', ()=>{ goLoser(); });
+      retryLink.addEventListener('click', ()=>{ goSlots(); });
+      backToMenu.addEventListener('click', ()=>{ goSlots(); });
+      cancelSubBtn.addEventListener('click', ()=>{ confirmCancel.classList.add('active'); });
+      confirmCancelClose.addEventListener('click', ()=> confirmCancel.classList.remove('active'));
+      confirmNo.addEventListener('click', ()=> confirmCancel.classList.remove('active'));
+      confirmYes.addEventListener('click', ()=>{
+        if(reservedNumber!=null){
+          const meta = loadMeta();
+          const cur = meta[reservedNumber] || { nextRenewal: Date.now()+MS_28D };
+          meta[reservedNumber] = { ...cur, status:'cancelled', cancelledAt: Date.now(), nextRenewal: Math.max(cur.nextRenewal||0, Date.now()) };
+          saveMeta(meta);
+          // Mostrar fecha y controles
+          const d = new Date(meta[reservedNumber].nextRenewal);
+          releaseDateEl.textContent = d.toLocaleString();
+          postCancelInfo.style.display = 'block';
+          cancelSubBtn.disabled = true;
+        }
+        confirmCancel.classList.remove('active');
+      });
+      renewSubBtn.addEventListener('click', ()=>{
+        if(reservedNumber!=null){
+          const meta = loadMeta();
+          meta[reservedNumber] = { status:'active', purchasedAt: Date.now(), nextRenewal: Date.now()+MS_28D };
+          saveMeta(meta);
+          postCancelInfo.style.display = 'none';
+          cancelSubBtn.disabled = false;
+        }
+      });
+      termsLinkBtn.addEventListener('click', ()=>{ termsModal.classList.add('active'); });
+      termsClose.addEventListener('click', ()=> termsModal.classList.remove('active'));
+      termsModal.addEventListener('click', (e)=>{ if(e.target===termsModal) termsModal.classList.remove('active'); });
+      window.addEventListener('keydown', (e)=>{
+        if(slotScreen.classList.contains('active') && !spinBtn.disabled && (e.key==='Enter' || e.key===' ')) assignNumber();
+        if(e.key==='Escape' && modal.classList.contains('active')) closeCheckout();
+        if(e.key==='Escape' && termsModal.classList.contains('active')) termsModal.classList.remove('active');
+        if(e.key==='Escape' && authModal.classList.contains('active')) closeAuth();
+      });
+
+      // === CHECKOUT (DEMO) ===
+      function openCheckout(){ modal.classList.add('active'); }
+      function closeCheckout(){ modal.classList.remove('active'); }
+      coClose.addEventListener('click', closeCheckout);
+      modal.addEventListener('click', (e)=>{ if(e.target===modal) closeCheckout(); });
+      const onPaid = (label)=>{
+        if(reservedNumber!=null){ markPurchased(reservedNumber); }
+        closeCheckout();
+        openAuth('signup');
+      };
+      payCard.addEventListener('click', ()=> onPaid('tarjeta'));
+      payApple.addEventListener('click', ()=> onPaid('Apple Pay'));
+      payPayPal.addEventListener('click', ()=> onPaid('PayPal'));
+
+      // === CONFETTI SIMPLE ===
+      function startConfetti(durationMs=3500){
+        const ctx = confettiCanvas.getContext('2d');
+        const W = confettiCanvas.width = window.innerWidth;
+        const H = confettiCanvas.height = window.innerHeight;
+        const colors = ['#ff4d4f','#ffec3d','#40a9ff','#73d13d','#9254de','#fa8c16'];
+        const N = Math.min(220, Math.floor(W/8));
+        const parts = Array.from({length:N},()=>({
+          x: Math.random()*W,
+          y: -20 - Math.random()*H,
+          r: 4+Math.random()*6,
+          c: colors[(Math.random()*colors.length)|0],
+          s: 2+Math.random()*3,
+          a: Math.random()*Math.PI
+        }));
+        let start = performance.now();
+        function frame(now){
+          const t = now - start;
+          const ctxW = confettiCanvas.width = window.innerWidth; // mantener tamaño si cambia viewport
+          const ctxH = confettiCanvas.height = window.innerHeight;
+          ctx.clearRect(0,0,ctxW,ctxH);
+          parts.forEach(p=>{ p.y += p.s; p.x += Math.sin((p.y+p.a)*0.02)*0.8; ctx.fillStyle=p.c; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); });
+          if(t < durationMs){ requestAnimationFrame(frame); } else { ctx.clearRect(0,0,ctxW,ctxH); }
+        }
+        requestAnimationFrame(frame);
+      }
+
+      // === AUTENTICACIÓN (login / signup) ===
+      let authMode = 'login';
+      let pendingMemberNumber = null;
+      function openAuth(mode='login'){
+        authMode = mode;
+        authTitle.textContent = mode==='login' ? 'Iniciar sesión' : 'Crear cuenta';
+        authError.style.display = 'none';
+        authEmail.value = '';
+        authPass.value = '';
+        authModal.classList.add('active');
+        if(mode==='signup') pendingMemberNumber = reservedNumber;
+      }
+      function closeAuth(){ authModal.classList.remove('active'); }
+      function emailValid(e){ return /.+@.+\..+/.test(e); }
+      if(openLogin){ openLogin.addEventListener('click', ()=> openAuth('login')); }
+      if(authClose){ authClose.addEventListener('click', closeAuth); }
+      if(authCancel){ authCancel.addEventListener('click', closeAuth); }
+      if(authSubmit){
+        authSubmit.addEventListener('click', ()=>{
+          const email = authEmail.value.trim();
+          const pass = authPass.value;
+          if(!emailValid(email) || pass.length < 6){ authError.style.display='block'; return; }
+          const users = loadUsers();
+          if(authMode==='login'){
+          const u = users[email];
+          if(!u || u.pass !== pass){ authError.style.display='block'; return; }
+          // Debe existir membresía activa asociada
+          const number = u.memberNumber;
+          if(!number){ authError.style.display='block'; return; }
+          reservedNumber = number;
+          memberNumberEl.textContent = zeroPad(reservedNumber);
+          if (typeof purchasedNumberEl !== 'undefined' && purchasedNumberEl) {
+            purchasedNumberEl.textContent = zeroPad(reservedNumber);
+          }
+          closeAuth();
+          goSuccess();
+        } else {
+          // signup tras compra
+          if(!pendingMemberNumber){ authError.style.display='block'; return; }
+          users[email] = { pass, memberNumber: pendingMemberNumber, status:'active' };
+          saveUsers(users);
+          reservedNumber = pendingMemberNumber;
+          memberNumberEl.textContent = zeroPad(reservedNumber);
+          if (typeof purchasedNumberEl !== 'undefined' && purchasedNumberEl) {
+            purchasedNumberEl.textContent = zeroPad(reservedNumber);
+          }
+          closeAuth();
+          goSuccess();
+        }
+      });
+      }
+
+      // === AVISO DE EXPIRACIÓN ===
+      function showExpireNotice(){
+        if(!expireNotice) return;
+        if(showExpireNotice._shown) return; // evitar duplicados
+        showExpireNotice._shown = true;
+        expireNotice.style.display = 'inline-flex';
+        setTimeout(()=>{ expireNotice.style.display = 'none'; showExpireNotice._shown = false; }, 4000);
+      }
+
+      // ==================
+      // PRUEBAS RÁPIDAS (self-tests)
+      // ==================
+      (function runSelfTests(){
+        const tests = [];
+        const assert = (name, cond) => tests.push({name, pass: !!cond});
+        tests.push({name:'Función animateReelsTo existe', pass: typeof animateReelsTo === 'function'});
+
+        assert('Título tragamonedas correcto', document.getElementById('slotTitle').textContent.trim()==='Tu número de miembro');
+        assert('Hay 7 dígitos en el tragamonedas', document.querySelectorAll('.digit-window').length === 7);
+        assert('Rango mínimo 1', MIN_NUMBER === 1);
+        assert('Rango máximo 1,000,000', MAX_NUMBER === 1000000);
+        assert('Countdown inicial 45', parseInt(document.getElementById('countdown').textContent,10) === 45);
+        assert('Botón unirme existe', !!document.getElementById('joinBtn'));
+        assert('Botón perdedor existe', !!document.getElementById('loseBtn'));
+        assert('Modal de checkout existe', !!document.getElementById('checkoutModal'));
+        assert('Pantalla de éxito existe', !!document.getElementById('successScreen'));
+        assert('Canvas de confeti existe', !!document.getElementById('confetti'));
+        assert('Botón cancelar subscripción existe', !!document.getElementById('cancelSub'));
+        assert('Botón términos existe', !!document.getElementById('termsLink'));
+        assert('Modal confirm cancel existe', !!document.getElementById('confirmCancel'));
+        assert('Botón renovar existe', !!document.getElementById('renewSub'));
+        assert('Aviso de expiración existe', !!document.getElementById('expireNotice'));
+        assert('Link Obtener nuevo número existe', !!document.getElementById('retryLink'));
+        assert('Link Iniciar sesión existe', !!document.getElementById('openLogin'));
+        assert('Modal auth existe', !!document.getElementById('authModal'));
+        assert('Campo email existe', !!document.getElementById('authEmail'));
+        assert('Campo password existe', !!document.getElementById('authPass'));
+        assert('Pantalla perdedor existe', !!document.getElementById('loserScreen'));
+        assert('Botón volver del perdedor existe', !!document.getElementById('backToMenu'));
+        // Unicidad de IDs
+        assert('ID único #countdown', document.querySelectorAll('#countdown').length === 1);
+        assert('ID único #memberNumber', document.querySelectorAll('#memberNumber').length === 1);
+        assert('ID único #joinBtn', document.querySelectorAll('#joinBtn').length === 1);
+        assert('ID único #loseBtn', document.querySelectorAll('#loseBtn').length === 1);
+        assert('ID único #purchasedNumber', document.querySelectorAll('#purchasedNumber').length === 1);
+        // Formato de número reservado (si existe)
+        const nn = document.getElementById('memberNumber').textContent.trim();
+        assert('Placeholder de número correcto', nn==='—' || /^\d{7}$/.test(nn));
+
+        const passed = tests.filter(t=>t.pass).length;
+        console.log(`[SELF-TEST] ${passed}/${tests.length} pruebas OK`, tests);
+      })();
+
+    })();
+  });
+  </script>
+</body>
+</html>
