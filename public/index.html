@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="es"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="utf-8" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;$1 al mes – Nada a cambio&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="description" content="Paga $1 al mes y recibe absolutamente nada. Limitado a 1 millón de miembros." /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;link rel="stylesheet" href="../src/styles/main.css" /&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Header --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;header class="app-header" role="banner" aria-label="Marca VANO"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="site-logo-text"&gt;VANO&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;button id="expireNotice" class="notice" role="alert" aria-live="assertive"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>El tiempo se agotó, vuelve a intentarlo</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/button&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- SLOT MACHINE SCREEN --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;section id="slotScreen" class="screen active" aria-labelledby="slotTitle"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="slot-wrap"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="brand" aria-label="Marca premium"&gt;&amp;nbsp;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;h1 id="slotTitle"&gt;Tu número de miembro&lt;/h1&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;!-- Teaser solicitado: pequeño texto centrado --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p id="benefitsTeaser" class="fine" aria-live="polite" style="text-align:center;margin:6px 0 10px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Beneficios exclusivos próximamente</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="slots" aria-live="polite" aria-atomic="true"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="reel"&gt;&lt;div class="digit-window" data-reel="0"&gt;0&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="reel"&gt;&lt;div class="digit-window" data-reel="1"&gt;0&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="reel"&gt;&lt;div class="digit-window" data-reel="2"&gt;0&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="reel"&gt;&lt;div class="digit-window" data-reel="3"&gt;0&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="reel"&gt;&lt;div class="digit-window" data-reel="4"&gt;0&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="reel"&gt;&lt;div class="digit-window" data-reel="5"&gt;0&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="reel"&gt;&lt;div class="digit-window" data-reel="6"&gt;0&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="slot-cta"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button id="spinBtn" class="btn"&gt;Obtener mi número&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p style="margin:6px 0 0 0;font-size:14px;color:#111;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button id="openLogin" class="linklike" aria-haspopup="dialog"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>Iniciar sesión</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- HOME SCREEN --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;main id="homeScreen" class="screen" aria-labelledby="homeTitle"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="home-wrap home-fold"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="fade-enter stagger" id="homeInner"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h1 id="homeTitle"&gt;Paga $1 al mes y recibe absolutamente nada.&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="sub"&gt;Limitado a solo 1 millón de miembros.&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="home-stack"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="reservation"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="tag" id="memberTag"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>Nº &lt;span id="memberNumber"&gt;—&lt;/span&gt; · &lt;span&gt;Reservado&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="countdown"&gt;Expira en &lt;span id="countdown"&gt;45&lt;/span&gt;s&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="actions"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button id="joinBtn" class="btn btn-black"&gt;Quiero unirme, soy increíble&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button id="loseBtn" class="btn btn-white"&gt;Soy un perdedor&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="checks"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="check"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;svg width="18" height="18"&gt;&lt;path d="M20 6L9 17l-5-5" stroke="var(--accent)" stroke-width="2"/&gt;&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;span&gt;Cancela en cualquier momento&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="check"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;svg width="18" height="18"&gt;&lt;path d="M20 6L9 17l-5-5" stroke="var(--accent)" stroke-width="2"/&gt;&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;span&gt;1 dollar al mes&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="check"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;svg width="18" height="18"&gt;&lt;path d="M20 6L9 17l-5-5" stroke="var(--accent)" stroke-width="2"/&gt;&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;span&gt;Sé parte del 0,012% del planeta&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="retry"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button id="retryLink" class="linklike"&gt;Obtener nuevo número&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/main&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- LOSER SCREEN --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;section id="loserScreen" class="screen" aria-labelledby="loserTitle"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="loser-wrap"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;h1 id="loserTitle" class="sr-only"&gt;Pantalla de broma&lt;/h1&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="emoji-box"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="emoji"&gt;😂&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="backToMenu" class="back-link"&gt;Regresar al menú principal&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- SUCCESS SCREEN --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;section id="successScreen" class="screen"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;canvas id="confetti" style="position:fixed;inset:0;pointer-events:none"&gt;&lt;/canvas&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="home-wrap" style="gap:24px; text-align:center;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;h1&gt;¡Bienvenido!&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p class="sub"&gt;Tu número de miembro&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="big-number"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Nº &lt;span id="purchasedNumber"&gt;—&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="display:flex;gap:12px;justify-content:center;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button id="cancelSub" class="btn btn-white"&gt;Cancelar suscripción&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button id="termsLink" class="btn btn-black"&gt;Términos y condiciones&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="postCancelInfo" style="display:none; margin-top:12px"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="sub"&gt;Tu número se liberará el &lt;span id="releaseDate"&gt;—&lt;/span&gt;.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button id="renewSub" class="btn btn-black"&gt;Renovar la suscripción&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- CONFIRM CANCEL MODAL --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="confirmCancel" class="modal"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="sheet"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="close-x" id="confirmCancelClose"&gt;×&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;h2&gt;¿Cancelar suscripción?&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p class="fine"&gt;Tu número se liberará al final del ciclo.&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="display:flex;gap:10px;justify-content:flex-end"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button id="confirmNo" class="btn btn-white"&gt;No&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button id="confirmYes" class="btn btn-black"&gt;Sí&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- TERMS MODAL --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="termsModal" class="modal"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="sheet"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="close-x" id="termsClose"&gt;×&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;h2&gt;Términos y condiciones&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="fine"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;• Puedes cancelar tu suscripción en cualquier momento.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;• Se renueva automáticamente cada 28 días.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;• No almacenamos datos personales.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- CHECKOUT MODAL --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="checkoutModal" class="modal"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="sheet"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="close-x" id="coClose"&gt;×&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;h2&gt;Elige tu método de pago&lt;/h2&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="pay-grid"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="pay-btn" id="payCard"&gt;Tarjeta de crédito&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="pay-btn" id="payApple"&gt;Apple&amp;nbsp;Pay&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="pay-btn" id="payPayPal"&gt;PayPal&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p class="fine"&gt;Modo de prueba&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- LOGIN / SIGNUP --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="authModal" class="modal"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="sheet"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="close-x" id="authClose"&gt;×&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;h2 id="authTitle"&gt;Iniciar sesión&lt;/h2&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label&gt;E-mail&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;input id="authEmail" type="email" placeholder="tu@correo.com" /&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label&gt;Contraseña&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;input id="authPass" type="password" minlength="6" placeholder="•••••" /&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="authError" class="fine" style="display:none"&gt;Datos incorrectos.&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="display:flex;gap:10px;justify-content:flex-end;margin-top:6px"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button id="authCancel" class="btn btn-white"&gt;Cancelar&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button id="authSubmit" class="btn btn-black"&gt;Continuar&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Carga del JS Modular --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script type="module" src="../src/js/main.js"&gt;&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
