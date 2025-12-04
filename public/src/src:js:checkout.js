@@ -22,7 +22,7 @@ const PAYMENT_LINKS = Object.freeze({
      onPaid() (marca comprado y abre signup) para poder probar el resto.
    - Si NO quieres este fallback, cambia DEMO_FALLBACK_ON_EMPTY_LINKS a false.
    ======================================================================= */
-const DEMO_FALLBACK_ON_EMPTY_LINKS = true;
+const DEMO_FALLBACK_ON_EMPTY_LINKS = false;
 
 /* =========================================================================
    Helpers
