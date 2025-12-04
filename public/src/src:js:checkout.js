@@ -37,7 +37,7 @@ function resolveLink(tpl) {
 /** Redirige en la misma pestaña (fiable: no lo bloquea el navegador). */
 function redirectTo(url) {
   // Si prefieres nueva pestaña: window.open(url, '_blank', 'noopener');
-  window.open(url, '_blank', 'noopener');
+  window.location.assign(url);
 }
 
 /** Flujo de pago "demo" (solo para pruebas locales). */
