@@ -33,3 +33,10 @@ export function wireUI()\{\
   els.termsModal.addEventListener('click', (e)=>\{ if(e.target===els.termsModal) els.termsModal.classList.remove('active'); \});\
 \}\
 }
+// En src/js/events.js
+import { increaseCountdown } from './countdown.js';
+
+els.joinBtn.addEventListener('click', () => {
+  increaseCountdown(300); // +5 minutos
+  // ...tu lógica existente (openCheckout, etc.)
+});
